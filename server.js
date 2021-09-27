@@ -63,7 +63,7 @@ app.get("/departments", (request, response) => {
 
 //step 3 [no matching route] // note week 4
 app.use((req, res) => {
-    res.status(404).send("Page Not Found");
+    res.status(404).send("Error 404! page Not Found");
 });
 
 //Step 5: week 2 notes and week 3 then
