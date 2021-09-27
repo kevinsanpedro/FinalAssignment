@@ -61,7 +61,7 @@ app.get("/departments", (request, response) => {
     })
 });
 
-//step 3 [no matching route] // need
+//step 3 [no matching route] // note week 4
 app.use((req, res) => {
     res.status(404).send("Page Not Found");
 });
