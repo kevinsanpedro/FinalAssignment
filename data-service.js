@@ -1,3 +1,4 @@
+
 const { rejects } = require('assert');
 let fs = require('fs');    
 var employees = [];
@@ -57,18 +58,7 @@ getDepartments = function() {
     })
 };
 
-module.exports.addEmployee  = function(employeeData)  {
-    return new Promise((res,rej)=>{
-        if(!employeeData.isManager)
-            employeeData.isManager = false;
-        else 
-            employeeData.isManager = true;
-        //set the employee number to new employee and add one
-        employeeData.employeeNum = employees.length + 1;
-        employees.push(employeeData);
-        res();   
-    })
-};
+
 ///employees?status=Part Time
 getEmployeesByStatus = (status) => {
     return new Promise (function(res, rej){
@@ -100,13 +90,54 @@ getEmployeesByManager = (manager) => {
     })
 }
 
-getEmployeeByNumber  = (value)  =>{
+//employee?6
+getEmployeeByNumber=(empNum)=>{
     return new Promise((res,rej)=>{
-        let employee = employees.filter(employee => employee.employeeNum == value);
-        if(employee.length === 0){
+        let employee = employees.filter(employee => employee.employeeNum == empNum);
+        if(employee.length == 0){
             rej("no result returned")
         }
-        else 
-            res(employee);  
+        else {
+            res(employee[0]);  
+        }
+        
     })
+}
+module.exports.addEmployee  = function(employeeData)  {
+    return new Promise((res,rej)=>{
+        if(!employeeData.isManager)
+            employeeData.isManager = false;
+        else 
+            employeeData.isManager = true;
+        //set the employee number to new employee and add one
+        employeeData.employeeNum = employees.length + 1;
+        employees.push(employeeData);
+        res();   
+    })
+};
+updateEmployee = (employeeData) => {
+    return new Promise ((res,rej) =>{
+        let employee = employees.filter(employee => employee.employeeNum == employeeData.employeeNum);
+    
+        if(employee.length == 0){
+            // rej("no result return")
+        }
+        else{
+            employees[0].firstName = employeeData.firstName;
+            employees[0].lastName = employeeData.lastName;
+            employees[0].email = employeeData.email
+            employees[0].addressStreet = employeeData.addressStreet
+            employees[0].addressCity = employeeData.addressCity
+            employees[0].addressState = employeeData.addressState
+            employees[0].addressPostal = employeeData.addressPostal
+            
+            employees[0].employeeManagerNum = employeeData.employeeManagerNum
+            employees[0].status =  employeeData.status
+            employees[0].department =  employeeData.department
+            
+            res()
+            
+        }   
+    })
+
 }
