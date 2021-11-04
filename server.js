@@ -151,14 +151,6 @@ app.get('/employee/:value', (req, res) => {
     })
 });
 
-/* OLD EMPLOYEE/VALUE json format  */
-// app.get('/employee/:value', (req, res) => {
-//     getEmployeeByNumber(req.params.value).then((data) => {
-//         res.json(data); }).catch((err) =>{
-//             res.json({message: err});
-//    })
-// });
-
 app.get('/employees/add', (req, res) => { 
     res.render('addEmployee', {layout: 'main'});
 });
