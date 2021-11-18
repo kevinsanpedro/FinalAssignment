@@ -1,12 +1,12 @@
 /*********************************************************************************
-* WEB322 – Assignment 04
+* WEB322 – Assignment 05
 * I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part
 * of this assignment has been copied manually or electronically from any other source
 * (including 3rd party web sites) or distributed to other students.
 *
 * Name: KEVIN SAN PEDRO Student ID:023503139 Date:2021-09-26
 *
-* Online (Heroku) Link: https://obscure-plateau-20353.herokuapp.com/
+* Online (Heroku) Link: https://obscure-plateau-20353.herokuapp.com/home
 ********************************************************************************/ 
 
 //first step is to "require" this module at the top of your server.js file so that we can use it to interact with the data from server.js

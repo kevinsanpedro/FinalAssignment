@@ -155,7 +155,7 @@ module.exports.addEmployee = function(employeeData){
             lastName: employeeData.lastName,
             email: employeeData.email,
             addressStreet: employeeData.addressStreet,
-            addresCity: employeeData.addresCity,
+            addressCity: employeeData.addressCity,
             addressState: employeeData.addressState,
             addressPostal: employeeData.addressPostal,
             isManager: employeeData.isManager,
