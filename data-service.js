@@ -8,19 +8,7 @@ Password    00a048e8120dc0fe8c749d412bf74eeb4488350b542548f1b726e0dd5786f169
 URI postgres://jllgevhjvewght:00a048e8120dc0fe8c749d412bf74eeb4488350b542548f1b726e0dd5786f169@ec2-34-198-189-252.compute-1.amazonaws.com:5432/d2g556h33jumms
 Heroku CLI    heroku pg:psql postgresql-aerodynamic-74970 --app obscure-plateau-20353
 
-for murmuring-base
-Host ec2-34-237-46-61.compute-1.amazonaws.com
-Database d1rmplc8r5sopl
-User odyiskncbpafmn
-Port 5432
-Password    d4baca402c20525254d52e34027e4fea2993daa2b0dde3b0d67d0e8646ecfaab
-URI postgres://odyiskncbpafmn:d4baca402c20525254d52e34027e4fea2993daa2b0dde3b0d67d0e8646ecfaab@ec2-34-237-46-61.compute-1.amazonaws.com:5432/d1rmplc8r5sopl
-Heroku CLI heroku pg:psql postgresql-amorphous-15064 --app murmuring-bastion-94445
 */
-
-
-
-
 
 const Sequelize = require('sequelize');
 var sequelize = new Sequelize('d2g556h33jumms', 'jllgevhjvewght', '00a048e8120dc0fe8c749d412bf74eeb4488350b542548f1b726e0dd5786f169', 
@@ -34,16 +22,6 @@ var sequelize = new Sequelize('d2g556h33jumms', 'jllgevhjvewght', '00a048e8120dc
     query: { raw: true }
 }); 
 
-/* var sequelize = new Sequelize('d1rmplc8r5sopl', 'odyiskncbpafmn', 'd4baca402c20525254d52e34027e4fea2993daa2b0dde3b0d67d0e8646ecfaab', 
-{ 
-    host: 'ec2-34-237-46-61.compute-1.amazonaws.com', 
-    dialect: 'postgres', 
-    port: 5432, 
-    dialectOptions: { 
-        ssl: { rejectUnauthorized: false } 
-    },
-    query: { raw: true }
-});  */
 
 /********************** Creating employee table, and Department table ***********************/
 var Employee = sequelize.define('Employee',{
