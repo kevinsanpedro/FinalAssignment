@@ -3,13 +3,10 @@
 * I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part
 * of this assignment has been copied manually or electronically from any other source
 * (including 3rd party web sites) or distributed to other students.
-*
-* Name: KEVIN SAN PEDRO Student ID:023503139 Date:2021-09-26
-*
+* Name: KEVIN SAN PEDRO Student ID:023503139 Date:2021-11-18
 * Online (Heroku) Link: https://obscure-plateau-20353.herokuapp.com/home
 ********************************************************************************/ 
 
-//first step is to "require" this module at the top of your server.js file so that we can use it to interact with the data from server.js
 var  dataService = require('./data-service.js');
 const  express = require("express");
 const  app = express();
@@ -25,8 +22,8 @@ const exphbs = require('express-handlebars');
 app.engine('.hbs', exphbs({extname: '.hbs'}));
 app.set('view engine' , '.hbs');
 
-const  HTTP_PORT = process.env.PORT || 8080;
 
+const  HTTP_PORT = process.env.PORT || 8080;
 onHttpStart = () => {
     console.log('Express http server listening on port ' + HTTP_PORT);
 }
@@ -53,11 +50,12 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.urlencoded({ extended: true }));
-
+/* 
+    The benefit here is that the navlink helper will 
+    automatically render the correct <li> element add the class "active" if app.locals.activeRoute matches the 
+    provided url, ie "/about" 
+*/
 app.engine('.hbs', exphbs({ extname: '.hbs', helpers: { 
-    // The benefit here is that the navlink helper will 
-    // automatically render the correct <li> element add the class "active" if app.locals.activeRoute matches the 
-    // provided url, ie "/about"
 navLink: function(url, options){ 
     return '<li' +  
         ((url == app.locals.activeRoute) ? ' class="active" ' : '') +  
@@ -77,11 +75,9 @@ equal: function (lvalue, rvalue, options) {
     defaultLayout: 'main'
 }}));
 
-
 /*************Html get Routes **************/ 
 app.get('/', (req, res) => {
-    res.render('home');
-    
+    res.render('home');  
 });
 
 app.get('/home', (req, res) => {
@@ -115,9 +111,6 @@ app.get("/employees", (req, res) => {
         dataService.getAllEmployees()
         .then((data) => {
             if( data.length > 0 ){
-                //res.render("employees", {message: data})
-                //res.render("employees",{ message:  data});
-                // console.log(data);
                 res.render("employees", {employees: data});
             }else{ 
                 res.render("employees",{ message: "no results" });
@@ -146,17 +139,9 @@ app.get("/images", (req, res) => {
     fs.readdir(path.join(__dirname,"/public/images/uploaded"),
     (err, items) =>{          
         res.render('images', {images: items});
-        
-        // res.json({images : items});
     });
 }); 
 
-/* app.get('/employee/:empNum', (req, res) => {
-    dataService.getEmployeeByNum(req.params.empNum).then((data) => {
-        res.render('employee', {employee: data });}).catch((err) =>{
-            res.render('employee',{message:err});
-    })
-}); */
 
 app.get("/employee/:empNum", (req, res) => { 
  
@@ -230,7 +215,7 @@ app.get('/departments/delete/:departmentId', (req, res) => {
 
 app.get('/employees/delete/:empNum', (req, res) => {
     dataService.deleteEmployeeByNum(req.params.empNum)
-    .then((data) => {
+    .then(() => {
         res.redirect('/employees')
     })
     .catch((err) =>{
@@ -246,11 +231,17 @@ app.post("/images/add", upload.single("imageFile"), (req, res) => { //A3 part 2 
 });
 
 app.post('/employees/add', function(req, res){ 
-    dataService.addEmployee(req.body).then(res.redirect('/employees'));
+    dataService.addEmployee(req.body).then(res.redirect('/employees')).catch((err) =>{
+        res.status(500).send( "Unable to add Employee / Employee not found");
+    });
 })
 
 app.post("/employee/update", (req, res) => { 
-    dataService.updateEmployee(req.body).then(res.redirect('/employees')); 
+    dataService.updateEmployee(req.body)
+    .then(res.redirect('/employees'))
+    .catch((err) =>{
+        res.status(500).send( "Unable to update Employee / Employee not found");
+}); 
 });
 
 app.post('/departments/add', function(req, res){ 
@@ -259,7 +250,7 @@ app.post('/departments/add', function(req, res){
         res.redirect('/departments')
     })
     .catch((err) => {   
-        res.status(500).send("Unable to Update Employee"); 
+        res.status(500).send("Unable to add department"); 
     });
 })
 

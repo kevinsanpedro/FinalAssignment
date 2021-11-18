@@ -78,12 +78,10 @@ module.exports.initialize = () =>{
 module.exports.getAllEmployees = () => {
     return new Promise(function (resolve, reject) { 
         Employee.findAll()
-        .then((data) => {
-            
+        .then((data) => {   
             resolve(data);
         })
         .catch((err) => {
-            //console.log(data)
             reject("no results returned"); 
         });
     });
@@ -202,11 +200,9 @@ module.exports.updateEmployee = (employeeData) => {
 
 module.exports.deleteEmployeeByNum = (empNum)  => {
     return new Promise(function (resolve, reject ){
-        console.log("step 1")
-        
             Employee.destroy({
                 where: { employeeNum: empNum}
-            }).then((data) => {
+            }).then(() => {
                 resolve("destroyed") 
             }).catch((err) => {
             reject("deparment cannot destroy");
@@ -233,12 +229,10 @@ module.exports.addDepartment = (departmentData) => {
                 departmentData[i] = null;
             }
         }
-
     Department.create({
         departmentName: departmentData.departmentName
     } )
-    .then((data) => {
-        console.log("succesfully create department")
+    .then(() => {
         resolve()
 
      })
@@ -284,7 +278,7 @@ module.exports.deleteDepartmentById = (id)  => {
     return new Promise(function (resolve, reject ){
             Department.destroy({
                 where: { departmentId: id}
-            }).then((data) => {
+            }).then(() => {
                 resolve("destroyed") 
             }).catch((err) => {
             reject("deparment cannot destroy");
