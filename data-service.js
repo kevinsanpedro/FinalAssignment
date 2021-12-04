@@ -11,6 +11,7 @@ Heroku CLI    heroku pg:psql postgresql-aerodynamic-74970 --app obscure-plateau-
 */
 
 const Sequelize = require('sequelize');
+
 var sequelize = new Sequelize('d2g556h33jumms', 'jllgevhjvewght', '00a048e8120dc0fe8c749d412bf74eeb4488350b542548f1b726e0dd5786f169', 
 { 
     host: 'ec2-34-198-189-252.compute-1.amazonaws.com', 
@@ -21,7 +22,6 @@ var sequelize = new Sequelize('d2g556h33jumms', 'jllgevhjvewght', '00a048e8120dc
     },
     query: { raw: true }
 }); 
-
 
 /********************** Creating employee table, and Department table ***********************/
 var Employee = sequelize.define('Employee',{
@@ -69,7 +69,7 @@ module.exports.initialize = () =>{
     return new Promise(function (resolve, reject) { 
         sequelize.sync().then(() => { 
             resolve();
-        }).catch((err) => {
+        }).catch(() => {
             reject("Unable to sync to the database");
         });
     })
@@ -94,8 +94,9 @@ module.exports.getEmployeesByStatus = (inStatus) => {
         .then((data) => {
             resolve(data)
         })
-        .catch((err) => {
+        .catch(() => {
             reject("no results returned"); 
+            return;
         });
     })
 };
@@ -107,8 +108,9 @@ module.exports.getEmployeesByDepartment = (inDepartment) => {
         .then((data) => {
             resolve(data)
         })
-        .catch((err) => {
+        .catch(() => {
             reject("no results returned"); 
+            return;
         });
     })
 }
@@ -120,8 +122,9 @@ module.exports.getEmployeesByManager = (inManager) => {
         .then((data) => {
             resolve(data)
         })
-        .catch((err) => {
+        .catch(() => {
             reject("no results returned"); 
+            return;
         });
     })
 };
@@ -133,8 +136,9 @@ module.exports.getEmployeeByNum= (empNum) => {
         .then((data) => {
             resolve(data[0])
         })
-        .catch((err) => {
+        .catch(() => {
             reject("no results returned"); 
+            return;
         });
     })
 };
@@ -142,31 +146,21 @@ module.exports.getEmployeeByNum= (empNum) => {
 
 module.exports.addEmployee = function(employeeData){
     return new Promise(function (resolve, reject) {
+
         employeeData.isManager = (employeeData.isManager) ? true : false;
-        for (let i in employeeData) {
-            if(employeeData[i] == ""){
-                employeeData[i] = null;
-            }
+
+        for (var prop in employeeData) {
+            if(employeeData[prop] == '')
+                employeeData[prop] = null;
         }
-        Employee.create({
-            firstName: employeeData.firstName,
-            lastName: employeeData.lastName,
-            email: employeeData.email,
-            addressStreet: employeeData.addressStreet,
-            addressCity: employeeData.addressCity,
-            addressState: employeeData.addressState,
-            addressPostal: employeeData.addressPostal,
-            isManager: employeeData.isManager,
-            employeeManagerNum: employeeData.employeeManagerNum,
-            status: employeeData.status,
-            department: employeeData.department,
-            hireDate: employeeData.hireDate
-            }).then(()=>{
+
+        Employee.create(employeeData).then(() => {
             resolve();
-        }).catch((err)=>{
-            reject("unable to create employee");
+        }).catch(()=>{
+            reject("unable to create employee"); return;
         });
-    });       
+
+    })      
 };
 
 module.exports.updateEmployee = (employeeData) => {
